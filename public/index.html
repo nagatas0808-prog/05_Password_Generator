@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パスワード生成ツール PRO | 強力なランダムパスワードを瞬時に作成</title>
+    <meta name="description" content="安全で強力なランダムパスワードを瞬時に生成。文字数・英字・数字・記号を自由にカスタマイズ。セキュリティ強度メーター付き無料ツール。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] } } }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            background-image: radial-gradient(at 0% 0%, hsla(330, 40%, 10%, 1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(350, 39%, 15%, 0.2) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(280, 49%, 15%, 0.2) 0, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #fb7185, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .password-display {
+            transition: all 0.3s ease;
+        }
+
+        .password-display:hover {
+            box-shadow: 0 0 30px rgba(251, 113, 133, 0.15);
+        }
+
+        .strength-bar {
+            transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s ease;
+        }
+
+        .copy-flash {
+            animation: flash 0.4s ease;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: rgba(16, 185, 129, 0.3);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+    </style>
+    <meta name="google-site-verification" content="ECNA6rCMysSFdAgO_tGT5OFHiEhy1hy99Dxd0-k-lWQ" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5383957100145583"
+        crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight"><span
+                    class="gradient-text">Password</span> PRO</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">安全で強力なパスワードをワンクリックで生成。もう覚える必要はありません。</p>
+        </div>
+
+        <div class="mb-10 text-center flex justify-center w-full min-h-[90px]">
+            <!-- ■■■ 広告タグ貼り付け位置（トップ） ■■■ -->
+        </div>
+
+        <div id="root"></div>
+
+        <!-- SEO -->
+        <div class="mt-16 pt-12 border-t border-slate-800/80">
+            <section class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center">
+                    <span class="w-1.5 h-8 bg-rose-500 rounded-full mr-4 inline-block"></span>
+                    Password PRO とは？
+                </h2>
+                <div class="space-y-4 text-slate-300 leading-relaxed text-base">
+                    <p>「Password
+                        PRO」は、<strong>暗号学的に安全なランダムパスワードを瞬時に生成する完全無料のWebツール</strong>です。文字数や使用する文字種（大文字・小文字・数字・記号）を自由にカスタマイズでき、セキュリティ強度をリアルタイムで評価します。
+                    </p>
+                    <p>すべての処理はブラウザ内で完結しており、生成されたパスワードがサーバーに送信されることは一切ありません。安心してご利用いただけます。</p>
+                </div>
+            </section>
+            <section class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center">
+                    <span class="w-1.5 h-8 bg-pink-500 rounded-full mr-4 inline-block"></span>
+                    安全なパスワードの条件
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-800/40 rounded-xl p-6 border border-slate-700/50">
+                        <h3 class="text-lg font-bold text-white mb-2">🔑 12文字以上</h3>
+                        <p class="text-sm text-slate-400">短いパスワードは総当たり攻撃で数秒〜数分で突破されます。最低でも12文字、できれば16文字以上を推奨します。</p>
+                    </div>
+                    <div class="bg-slate-800/40 rounded-xl p-6 border border-slate-700/50">
+                        <h3 class="text-lg font-bold text-white mb-2">🔀 混合文字種</h3>
+                        <p class="text-sm text-slate-400">大文字・小文字・数字・記号を混ぜることで、パスワードの強度が指数関数的に上がります。</p>
+                    </div>
+                    <div class="bg-slate-800/40 rounded-xl p-6 border border-slate-700/50">
+                        <h3 class="text-lg font-bold text-white mb-2">🚫 使い回し厳禁</h3>
+                        <p class="text-sm text-slate-400">1つのサービスから漏洩すると全アカウントが危険に。サービスごとに異なるパスワードを設定しましょう。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-4">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center">
+                    <span class="w-1.5 h-8 bg-indigo-500 rounded-full mr-4 inline-block"></span>
+                    よくある質問（FAQ）
+                </h2>
+                <div class="bg-slate-800/30 rounded-xl border border-slate-700/50 p-6 md:p-8 space-y-6">
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Q. 生成されたパスワードは安全ですか？</h3>
+                        <p class="text-slate-400 text-sm">はい。Web Crypto
+                            APIを使用した暗号学的に安全な乱数で生成しています。Math.random()のような弱い乱数は使用していません。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Q. パスワードはサーバーに保存されますか？</h3>
+                        <p class="text-slate-400 text-sm">いいえ。すべてお使いのブラウザ内で処理されます。ネットワーク通信は一切発生しません。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="mt-12 text-center flex justify-center w-full min-h-[250px]">
+            <!-- ■■■ 広告タグ貼り付け位置（ボトム） ■■■ -->
+        </div>
+    </div>
+
+    <script type="text/babel">
+        const App = () => {
+            const [length, setLength] = React.useState(16);
+            const [useUpper, setUseUpper] = React.useState(true);
+            const [useLower, setUseLower] = React.useState(true);
+            const [useNumbers, setUseNumbers] = React.useState(true);
+            const [useSymbols, setUseSymbols] = React.useState(true);
+            const [excludeAmbiguous, setExcludeAmbiguous] = React.useState(false);
+            const [password, setPassword] = React.useState('');
+            const [copied, setCopied] = React.useState(false);
+            const [history, setHistory] = React.useState([]);
+
+            const generate = React.useCallback(() => {
+                const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const lower = 'abcdefghijklmnopqrstuvwxyz';
+                const numbers = '0123456789';
+                const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+                const ambiguous = 'il1Lo0O';
+
+                let chars = '';
+                if (useUpper) chars += upper;
+                if (useLower) chars += lower;
+                if (useNumbers) chars += numbers;
+                if (useSymbols) chars += symbols;
+                if (!chars) chars = lower;
+
+                if (excludeAmbiguous) {
+                    chars = chars.split('').filter(c => !ambiguous.includes(c)).join('');
+                }
+
+                const array = new Uint32Array(length);
+                crypto.getRandomValues(array);
+                let pw = '';
+                for (let i = 0; i < length; i++) {
+                    pw += chars[array[i] % chars.length];
+                }
+                setPassword(pw);
+                setCopied(false);
+                setHistory(prev => [pw, ...prev.slice(0, 4)]);
+            }, [length, useUpper, useLower, useNumbers, useSymbols, excludeAmbiguous]);
+
+            React.useEffect(() => { generate(); }, []);
+
+            const copyToClipboard = () => {
+                navigator.clipboard.writeText(password);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const getStrength = () => {
+                let pool = 0;
+                if (useUpper) pool += 26;
+                if (useLower) pool += 26;
+                if (useNumbers) pool += 10;
+                if (useSymbols) pool += 26;
+                if (!pool) pool = 26;
+                const entropy = Math.log2(Math.pow(pool, length));
+                if (entropy < 40) return { label: '危険', color: 'bg-red-500', textColor: 'text-red-400', pct: 20, emoji: '🔓' };
+                if (entropy < 60) return { label: '弱い', color: 'bg-orange-500', textColor: 'text-orange-400', pct: 40, emoji: '⚠️' };
+                if (entropy < 80) return { label: '普通', color: 'bg-yellow-500', textColor: 'text-yellow-400', pct: 60, emoji: '🔐' };
+                if (entropy < 100) return { label: '強い', color: 'bg-emerald-500', textColor: 'text-emerald-400', pct: 80, emoji: '💪' };
+                return { label: '最強', color: 'bg-emerald-400', textColor: 'text-emerald-300', pct: 100, emoji: '🛡️' };
+            };
+
+            const strength = getStrength();
+
+            const Toggle = ({ label, checked, onChange }) => (
+                <label className="flex items-center justify-between cursor-pointer group">
+                    <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{label}</span>
+                    <div className="relative">
+                        <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
+                        <div className={`w-11 h-6 rounded-full transition-colors ${checked ? 'bg-rose-500' : 'bg-slate-600'}`}></div>
+                        <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${checked ? 'translate-x-5' : ''}`}></div>
+                    </div>
+                </label>
+            );
+
+            return (
+                <div className="space-y-6">
+                    {/* パスワード表示 */}
+                    <div className={`glass rounded-2xl p-6 shadow-xl password-display ${copied ? 'copy-flash' : ''}`}>
+                        <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm text-slate-400">生成されたパスワード</span>
+                            <span className={`text-sm font-bold ${strength.textColor}`}>{strength.emoji} {strength.label}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="flex-grow bg-slate-900/80 rounded-xl px-5 py-4 border border-slate-700/50 overflow-x-auto">
+                                <code className="text-xl md:text-2xl font-mono font-semibold text-white whitespace-nowrap select-all">{password}</code>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <button onClick={copyToClipboard} className={`px-4 py-3 rounded-xl font-medium text-sm transition-all ${copied ? 'bg-emerald-600 text-white' : 'bg-slate-700 hover:bg-slate-600 text-slate-200'}`}>
+                                    {copied ? '✓ コピー済' : '📋 コピー'}
+                                </button>
+                                <button onClick={generate} className="px-4 py-3 rounded-xl font-medium text-sm bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white shadow-lg hover:shadow-rose-500/30 transition-all">
+                                    🔄 再生成
+                                </button>
+                            </div>
+                        </div>
+                        {/* 強度バー */}
+                        <div className="mt-4">
+                            <div className="w-full bg-slate-800 rounded-full h-2.5">
+                                <div className={`strength-bar h-2.5 rounded-full ${strength.color}`} style={{ width: `${strength.pct}%` }}></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* 設定 */}
+                        <div className="glass rounded-2xl p-6 shadow-xl">
+                            <h2 className="text-lg font-semibold mb-5 flex items-center">
+                                <span className="mr-2">⚙️</span> カスタマイズ
+                            </h2>
+                            <div className="space-y-5">
+                                <div>
+                                    <div className="flex justify-between mb-2">
+                                        <label className="text-sm text-slate-300">文字数</label>
+                                        <span className="text-sm font-bold text-rose-400">{length}</span>
+                                    </div>
+                                    <input type="range" min="4" max="64" value={length} onChange={(e) => { setLength(Number(e.target.value)); }} onMouseUp={generate} onTouchEnd={generate}
+                                        className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-rose-500" />
+                                    <div className="flex justify-between text-xs text-slate-500 mt-1"><span>4</span><span>64</span></div>
+                                </div>
+                                <div className="space-y-3 pt-2">
+                                    <Toggle label="大文字 (A-Z)" checked={useUpper} onChange={() => { setUseUpper(!useUpper); setTimeout(generate, 0); }} />
+                                    <Toggle label="小文字 (a-z)" checked={useLower} onChange={() => { setUseLower(!useLower); setTimeout(generate, 0); }} />
+                                    <Toggle label="数字 (0-9)" checked={useNumbers} onChange={() => { setUseNumbers(!useNumbers); setTimeout(generate, 0); }} />
+                                    <Toggle label="記号 (!@#$%...)" checked={useSymbols} onChange={() => { setUseSymbols(!useSymbols); setTimeout(generate, 0); }} />
+                                    <Toggle label="紛らわしい文字を除外 (i,l,1,O,0)" checked={excludeAmbiguous} onChange={() => { setExcludeAmbiguous(!excludeAmbiguous); setTimeout(generate, 0); }} />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 履歴 */}
+                        <div className="glass rounded-2xl p-6 shadow-xl">
+                            <h2 className="text-lg font-semibold mb-5 flex items-center">
+                                <span className="mr-2">📜</span> 生成履歴（直近5件）
+                            </h2>
+                            {history.length === 0 ? (
+                                <p className="text-slate-500 text-sm">まだ履歴がありません</p>
+                            ) : (
+                                <div className="space-y-2">
+                                    {history.map((pw, i) => (
+                                        <div key={i} className="flex items-center gap-2 bg-slate-800/50 rounded-lg px-3 py-2.5 group hover:bg-slate-800/80 transition-colors">
+                                            <code className="text-xs font-mono text-slate-400 flex-grow truncate">{pw}</code>
+                                            <button onClick={() => { navigator.clipboard.writeText(pw); }} className="text-xs text-slate-500 hover:text-white transition-colors opacity-0 group-hover:opacity-100">
+                                                📋
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
